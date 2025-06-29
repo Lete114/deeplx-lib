@@ -1,0 +1,9 @@
+.:
+  BLOCKED_STATUS: number
+  getBody: function
+  getICount: function
+  getRandomNumber: function
+  getTimestamp: function
+  handlerBodyMethod: function
+  translate: function
+  DEEPL_URL: string

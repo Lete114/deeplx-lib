@@ -1,0 +1,77 @@
+{
+  "name": "deeplx-lib",
+  "type": "module",
+  "version": "0.0.1",
+  "packageManager": "pnpm@10.6.2",
+  "description": "Powerful free DeepL API wrapper with no token required.",
+  "author": "Lete114 <me@imlete.cn>",
+  "license": "MIT",
+  "homepage": "https://github.com/lete114/deeplx-lib#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lete114/deeplx-lib.git"
+  },
+  "bugs": "https://github.com/lete114/deeplx-lib/issues",
+  "keywords": [
+    "deepl",
+    "deeplx",
+    "deepl-api",
+    "deepl-free",
+    "deepl-translate",
+    "deepl-translation",
+    "deepl-translator",
+    "translate",
+    "translate-api",
+    "translator"
+  ],
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "./dist/index.mjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint",
+    "prepublishOnly": "nr build",
+    "release": "bumpp && pnpm publish",
+    "start": "tsx src/index.ts",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit",
+    "prepare": "simple-git-hooks"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "catalog:cli",
+    "@antfu/ni": "catalog:cli",
+    "@antfu/utils": "catalog:inlined",
+    "@types/node": "catalog:types",
+    "bumpp": "catalog:cli",
+    "eslint": "catalog:cli",
+    "lint-staged": "catalog:cli",
+    "simple-git-hooks": "catalog:cli",
+    "tinyexec": "catalog:utils",
+    "tsx": "catalog:cli",
+    "typescript": "catalog:cli",
+    "unbuild": "catalog:cli",
+    "vite": "catalog:cli",
+    "vitest": "catalog:testing",
+    "vitest-package-exports": "catalog:testing",
+    "yaml": "catalog:testing"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm i --frozen-lockfile --ignore-scripts --offline && npx lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  }
+}
