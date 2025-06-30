@@ -1,6 +1,6 @@
 // https://developers.deepl.com/docs/api-reference/translate
 
-import type { IOptions } from './types'
+import type { IDeepLData, IDeepLXData, IOptions } from './types'
 
 export const BLOCKED_STATUS = 429
 export const DEEPL_URL = 'https://www2.deepl.com/jsonrpc'
@@ -20,6 +20,23 @@ export async function translate(options: IOptions): Promise<Response> {
   }
 
   return response
+}
+
+export function parse2DeepLX(data: IOptions & IDeepLData): IDeepLXData {
+  const from = data.result.lang
+  const to = data.to
+  const texts = data.result.texts[0]
+  return {
+    code: 200,
+    id: data.id,
+    method: 'Free',
+    from,
+    to,
+    source_lang: from,
+    target_lang: data.to,
+    data: texts.text,
+    alternatives: texts.alternatives.map(i => i.text),
+  }
 }
 
 export function getBody({ from, to, text }: IOptions): string {

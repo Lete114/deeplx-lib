@@ -1,9 +1,10 @@
-import type { IOptions } from '../src/types'
+import type { IDeepLData, IOptions } from '../src/types'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import {
   DEEPL_URL,
   getBody,
   handlerBodyMethod,
+  parse2DeepLX,
   translate,
 } from '../src'
 
@@ -24,6 +25,75 @@ describe('handlerBodyMethod', () => {
     expect(replaced2).toContain('"method": "')
     // 1+3=4 => %13 === 4 && 1+5=6 => %29 !== 0
     expect(replaced3).toContain('"method": "')
+  })
+})
+
+describe('parse2DeepLX', () => {
+  it('should convert DeepL raw response into simplified structure', () => {
+    const input: IOptions & IDeepLData = {
+      from: 'EN',
+      to: 'ZH',
+      text: 'Hello',
+      jsonrpc: '2.0',
+      id: 123456,
+      result: {
+        texts: [
+          {
+            text: '你好',
+            alternatives: [
+              { text: '您好' },
+              { text: '哈喽' },
+            ],
+          },
+        ],
+        lang: 'EN',
+        lang_is_confident: true,
+        detectedLanguages: {
+          EN: 0.9,
+          ZH: 0.1,
+        },
+      },
+    }
+
+    const output = parse2DeepLX(input)
+
+    expect(output).toEqual({
+      code: 200,
+      id: 123456,
+      method: 'Free',
+      from: 'EN',
+      to: 'ZH',
+      source_lang: 'EN',
+      target_lang: 'ZH',
+      data: '你好',
+      alternatives: ['您好', '哈喽'],
+    })
+  })
+
+  it('should handle empty alternatives gracefully', () => {
+    const input: IOptions & IDeepLData = {
+      from: 'EN',
+      to: 'ZH',
+      text: 'Hi',
+      jsonrpc: '2.0',
+      id: 654321,
+      result: {
+        texts: [
+          {
+            text: '嗨',
+            alternatives: [],
+          },
+        ],
+        lang: 'EN',
+        lang_is_confident: true,
+        detectedLanguages: {},
+      },
+    }
+
+    const output = parse2DeepLX(input)
+
+    expect(output.alternatives).toEqual([])
+    expect(output.data).toBe('嗨')
   })
 })
 

@@ -42,7 +42,7 @@ console.log(data)
 /*
 {
   jsonrpc: '2.0',
-  id: 128571000,
+  id: 123456789,
   result: {
     texts: [
       {
@@ -106,6 +106,47 @@ Send a translation request to DeepL's internal JSON-RPC endpoint.
 | `to`   | `TTargetLanguage` | Target language   |
 | `text` | `string`          | Text to translate |
 
+### `parse2DeepLX(data: IOptions & IDeepLData): IDeepLXData`
+
+Parses the raw DeepL JSON-RPC response into a simplified, standardized format for easier usage.
+
+Useful when you want to normalize the `translate` or `fetch` result into a consistent structure.
+
+#### Example
+
+```ts
+import { parse2DeepLX, translate } from 'deeplx-lib'
+
+const translateData: IOptions = {
+  from: 'EN',
+  to: 'ZH',
+  text: 'Good morning',
+}
+
+const response = await translate(translateData)
+
+const raw = (await response.json()) as IDeepLData
+const normalized = parse2DeepLX({
+  ...translateData,
+  ...raw,
+})
+
+console.log(normalized)
+/*
+{
+  code: 200,
+  id: 123456789,
+  method: 'Free',
+  from: 'EN',
+  to: 'ZH',
+  source_lang: 'EN',
+  target_lang: 'ZH',
+  data: '早上好',
+  alternatives: ['早安', '上午好']
+}
+*/
+```
+
 ### `getBody(options: IOptions): string`
 
 Generates a JSON-RPC-compliant request body that mimics DeepL’s internal format. You can use it to manually perform the request using your own `fetch` implementation.
@@ -134,7 +175,7 @@ console.log(result) // The result is the same as `translate(options: IOptions)`
 ### Language Types
 
 ```ts
-// https://developers.deepl.com/docs/getting-started/supported-languages
+// Subsequent changes may be made, see details at: https://github.com/lete114/deeplx-lib/blob/main/src/types.d.ts
 export type TVariant = 'EN-GB' | 'EN-US' | 'PT-BR' | 'PT-PT' | 'ZH-HANS' | 'ZH-HANT'
 export type TLanguage =
   | 'AR' | 'BG' | 'CS' | 'DA' | 'DE' | 'EL' | 'EN' | 'ES' | 'ET'
@@ -150,10 +191,11 @@ export interface IOptions {
 }
 ```
 
-### Other Exports (internal utilities, optional)
+### Other Exports
 
 | Method              | Description                                          |
 | ------------------- | ---------------------------------------------------- |
+| `parse2DeepLX`      | Parses the full DeepL response into a DeepLX format  |
 | `getBody`           | Constructs the JSON-RPC request body                 |
 | `getICount`         | Counts the number of "i" characters in the text      |
 | `getTimestamp`      | Generates a timestamp adjusted by the text content   |

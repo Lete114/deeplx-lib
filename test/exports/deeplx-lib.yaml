@@ -1,9 +1,10 @@
 .:
   BLOCKED_STATUS: number
+  DEEPL_URL: string
   getBody: function
   getICount: function
   getRandomNumber: function
   getTimestamp: function
   handlerBodyMethod: function
+  parse2DeepLX: function
   translate: function
-  DEEPL_URL: string

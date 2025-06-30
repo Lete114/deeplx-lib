@@ -9,3 +9,29 @@ export interface IOptions {
   to: TTargetLanguage
   text: string
 }
+
+export interface IDeepLXData {
+  code: 200
+  id: number
+  method: 'Free'
+  from: TSourceLanguage
+  to: TTargetLanguage
+  source_lang: TSourceLanguage
+  target_lang: TTargetLanguage
+  data: string
+  alternatives: string[]
+}
+
+export interface IDeepLData {
+  jsonrpc: '2.0'
+  id: number
+  result: {
+    texts: {
+      text: string
+      alternatives: { text: string }[]
+    }[]
+    lang: TSourceLanguage
+    lang_is_confident: boolean
+    detectedLanguages: Record<string, number>
+  }
+}
