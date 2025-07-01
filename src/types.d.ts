@@ -22,9 +22,12 @@ export interface IDeepLXData {
   alternatives: string[]
 }
 
-export interface IDeepLData {
+export interface IDeepLBaseData {
   jsonrpc: '2.0'
   id: number
+}
+
+export interface IDeepLData extends IDeepLBaseData {
   result: {
     texts: {
       text: string
@@ -33,5 +36,15 @@ export interface IDeepLData {
     lang: TSourceLanguage
     lang_is_confident: boolean
     detectedLanguages: Record<string, number>
+  }
+}
+
+export interface IDeepLDataError extends IDeepLBaseData {
+  error: {
+    code: number
+    message: string
+    data: {
+      what: string
+    }
   }
 }
