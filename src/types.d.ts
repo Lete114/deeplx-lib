@@ -48,3 +48,9 @@ export interface IDeepLDataError extends IDeepLBaseData {
     }
   }
 }
+
+export interface IDeepLDataError429 {
+  code: 429
+  jsonrpc: '2.0'
+  error: { code: number, message: string }
+}

@@ -118,8 +118,10 @@ describe('translate', () => {
   })
 
   it('should throw error when blocked by DeepL', async () => {
-    mockFetch.mockResolvedValueOnce({ status: 429 })
-    await expect(translate({ from: 'EN', to: 'ZH', text: 'Hello' })).rejects.toThrow(/Too many requests/)
+    mockFetch.mockResolvedValueOnce({ status: 429 } as Response)
+
+    const res = await translate({ from: 'EN', to: 'ZH', text: 'Hello' })
+    expect(res.status).toBe(429)
   })
 
   it('should return response when successful', async () => {

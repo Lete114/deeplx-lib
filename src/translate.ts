@@ -2,24 +2,16 @@
 
 import type { IDeepLData, IDeepLXData, IOptions } from './types'
 
-export const BLOCKED_STATUS = 429
 export const DEEPL_URL = 'https://www2.deepl.com/jsonrpc'
 
 export async function translate(options: IOptions): Promise<Response> {
   const body = getBody(options)
 
-  const response = await fetch(DEEPL_URL, {
+  return fetch(DEEPL_URL, {
     method: 'POST',
     body,
     headers: { 'Content-Type': 'application/json' },
   })
-  if (response.status === BLOCKED_STATUS) {
-    throw new Error(
-      `Too many requests, your IP has been blocked by DeepL temporarily, please don't request it frequently in a short time.`,
-    )
-  }
-
-  return response
 }
 
 export function parse2DeepLX(data: IOptions & IDeepLData): IDeepLXData {
