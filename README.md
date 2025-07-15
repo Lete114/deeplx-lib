@@ -12,7 +12,7 @@
 ## Features
 
 - 📦 Zero dependencies, extremely lightweight
-- 🌐 Supports all DeepL languages (including variants like `EN-GB`, `ZH-HANS`)
+- 🌐 Supports all DeepL languages
 - 💡 Automatically constructs `jsonrpc` request bodies, mimicking browser behavior
 - 🧪 Fully tested with unit tests for reliability
 
@@ -176,13 +176,12 @@ console.log(result) // The result is the same as `translate(options: IOptions)`
 
 ```ts
 // Subsequent changes may be made, see details at: https://github.com/lete114/deeplx-lib/blob/main/src/types.d.ts
-export type TVariant = 'EN-GB' | 'EN-US' | 'PT-BR' | 'PT-PT' | 'ZH-HANS' | 'ZH-HANT'
 export type TLanguage =
   | 'AR' | 'BG' | 'CS' | 'DA' | 'DE' | 'EL' | 'EN' | 'ES' | 'ET'
   | 'FI' | 'FR' | 'HU' | 'ID' | 'IT' | 'JA' | 'KO' | 'LT' | 'LV' | 'NB'
   | 'NL' | 'PL' | 'PT' | 'RO' | 'RU' | 'SK' | 'SL' | 'SV' | 'TR' | 'UK' | 'ZH'
 export type TSourceLanguage = 'AUTO' | TLanguage
-export type TTargetLanguage = TLanguage | TVariant
+export type TTargetLanguage = TLanguage
 
 export interface IOptions {
   from: TSourceLanguage
